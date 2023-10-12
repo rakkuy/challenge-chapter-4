@@ -6,7 +6,7 @@ module.exports = {
   // Menambahkan akun baru ke user yang sudah didaftarkan.
   registerAccount: async (req, res) => {
     console.log(req.body);
-    const userId = req.body.userId;
+    const userId = req.body.user_id;
     try {
       const user = await prisma.users.findUnique({
         where: {
@@ -112,9 +112,9 @@ module.exports = {
   // Update Account
   updateAccount: async (req, res) => {
     try {
-      const accountId = parseInt(req.params.id); // Assuming you are passing the account ID in the URL params
+      const accountId = parseInt(req.params.id); // Dengan asumsi Anda meneruskan ID transaksi di parameter URL
 
-      // Check if the account exists
+      // Periksa apakah akun tersebut ada
       const account = await prisma.bank_accounts.findUnique({
         where: {
           id: accountId,
@@ -125,7 +125,7 @@ module.exports = {
         return res.status(404).json({ error: "Account Not Found" });
       }
 
-      // Update the account information
+      // Perbarui informasi akun
       const updatedAccount = await prisma.bank_accounts.update({
         where: {
           id: accountId,
@@ -134,7 +134,7 @@ module.exports = {
           bank_name: req.body.bank_name,
           bank_account_number: req.body.bank_account_number,
           balance: BigInt(req.body.balance),
-          // You can add more fields to update as needed
+          // dapat menambahkan lebih banyak bidang untuk diperbarui sesuai kebutuhan
         },
       });
 
@@ -145,7 +145,7 @@ module.exports = {
           bank_name: updatedAccount.bank_name,
           bank_account_number: updatedAccount.bank_account_number,
           balance: Number(updatedAccount.balance),
-          // Add more fields if needed
+          // Tambahkan lebih banyak bidang jika diperlukan
         },
       });
     } catch (error) {
@@ -157,9 +157,9 @@ module.exports = {
   // Delete Account
   deleteAccount: async (req, res) => {
     try {
-      const accountId = parseInt(req.params.id); // Assuming you are passing the account ID in the URL params
+      const accountId = parseInt(req.params.id); // Dengan asumsi Anda meneruskan ID transaksi di parameter URL
 
-      // Check if the account exists
+      // Periksa apakah akun tersebut ada
       const account = await prisma.bank_accounts.findUnique({
         where: {
           id: accountId,

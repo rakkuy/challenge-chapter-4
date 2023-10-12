@@ -27,9 +27,13 @@ module.exports = {
 
   // menampilkan daftar users.
   daftarUser: async (req, res) => {
-    const user = await prisma.users.findMany({});
+    const users = await prisma.users.findMany({
+      include: {
+        profile: true, // Memperlihatkan profile pada users
+      },
+    });
     return res.json({
-      data: user,
+      data: users,
     });
   },
 

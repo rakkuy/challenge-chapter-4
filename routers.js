@@ -28,6 +28,7 @@ router.delete("/accounts/:id", accountControllers.deleteAccount);
 router.post("/transactions", transactionControllers.createTransaction);
 router.get("/transactions", transactionControllers.getAllTransaction);
 router.get("/transactions/:id", transactionControllers.getTransactionById);
+router.put("/transactions/:id", transactionControllers.updateTransaction);
 router.delete("/transactions/:id", transactionControllers.deleteTransaction);
 
 module.exports = router;

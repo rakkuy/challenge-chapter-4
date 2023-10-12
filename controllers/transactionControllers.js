@@ -28,14 +28,14 @@ module.exports = {
       if (!sourceAccount || !destinationAccount) {
         return res
           .status(404)
-          .json({ error: "Sender's or Recipient's Account Not Found!" });
+          .json({ error: "Akun Pengirim atau Penerima Tidak Ditemukan!" });
       }
 
       // validasi saldo akun pengirim
       if (sourceAccount.balance < amount) {
         return res
           .status(400)
-          .json({ error: "The Sender's Account Balance is Insufficient" });
+          .json({ error: "Saldo Rekening Pengirim Tidak Cukup" });
       }
 
       // operasi transaksi akun pengirim dan penerima
@@ -78,7 +78,7 @@ module.exports = {
       console.error(error);
       return res
         .status(500)
-        .json({ error: "An Error Occurred while Processing the Transaction" });
+        .json({ error: "Terjadi Kesalahan saat Memproses Transaksi" });
     }
   },
 
@@ -112,7 +112,7 @@ module.exports = {
       console.error(error);
       return res
         .status(500)
-        .json({ error: "An Error Occurred while Retrieving Transactions" });
+        .json({ error: "Terjadi Kesalahan saat Mengambil Transaksi" });
     }
   },
 
@@ -136,7 +136,7 @@ module.exports = {
         },
       });
       if (!transaction) {
-        return res.status(404).json({ error: "Transaction Not Found!" });
+        return res.status(404).json({ error: "Transaksi Tidak Ditemukan!" });
       }
       const transactionById = {
         transaction_id: transaction.id,
@@ -151,13 +151,11 @@ module.exports = {
       console.error(error);
       return res
         .status(500)
-        .json({ error: "An Error Occurred while Retrieving Transaction" });
+        .json({ error: "Terjadi Kesalahan saat Mengambil Transaksi" });
     }
   },
 
-  // Delete Transaksi
-
-  deleteTransaction: async (req, res) => {
+  updateTransaction: async (req, res) => {
     try {
       const transactionId = parseInt(req.params.id); // Assuming you are passing the transaction ID in the URL params
 
@@ -171,6 +169,51 @@ module.exports = {
 
       if (!existingTransaction) {
         return res.status(404).json({ error: "Transaction Not Found" });
+      }
+
+      // Update the transaction details
+      const updatedTransaction = await prisma.bank_accounts_transactions.update(
+        {
+          where: {
+            id: transactionId,
+          },
+          data: {
+            // Convert BigInt to a string for serialization
+            source_account_id: parseInt(req.body.source_account_id),
+            destination_account_id: parseInt(req.body.destination_account_id),
+            amount: BigInt(req.body.amount.toString()),
+          },
+        }
+      );
+
+      updatedTransaction.amount = updatedTransaction.amount.toString(); // Mengubah string sebelum masuk ke json
+      // Json tidak bisa langsung menerima BigInt
+
+      return res.json({
+        data: updatedTransaction,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+
+  // Delete Transaksi
+
+  deleteTransaction: async (req, res) => {
+    try {
+      const transactionId = parseInt(req.params.id); // Dengan asumsi Anda meneruskan ID transaksi di parameter URL
+
+      // Temukan transaksi yang ada
+      const existingTransaction =
+        await prisma.bank_accounts_transactions.findUnique({
+          where: {
+            id: transactionId,
+          },
+        });
+
+      if (!existingTransaction) {
+        return res.status(404).json({ error: "Transaksi Tidak Ditemukan" });
       }
 
       // Delete the transaction

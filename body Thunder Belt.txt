@@ -1,0 +1,74 @@
+localhost:5000/api/v1/users 		(POST)		=> Create
+localhost:5000/api/v1/users 		(GET)		=> Melihat/Read
+localhost:5000/api/v1/users/:userId 	(GET)		=> Melihat/Read per user id (misal userID = 1)
+localhost:5000/api/v1/users/:userId	(PUT) 		=> Update data users
+localhost:5000/api/v1/users/:userId	(DELETE) 	=> Menghapus user dengan userId
+
+
+
+<========== Users ==========>
+
+	<=== Create ===>
+
+{
+  "id": 6,
+  "name": "Mahendra",
+  "email": "mahendra18@gmail.com",
+  "password": "312213",
+	"identity_number": "33333",
+	"identity_type": "KTP",
+	"address": "Sukoharjo"
+}
+
+
+	<=== Delete ===>
+
+{
+  "id": 6
+}
+
+
+
+
+	Account
+
+{
+    "id": 7,
+    "user_id": 4,
+    "bank_name": "BCA",
+    "bank_account_number": "11111",
+    "balance": 9900000
+  }
+
+
+{
+    "id": 8,
+    "user_id": 5,
+    "bank_name": "MANDIRI",
+    "bank_account_number": "22222",
+    "balance": 20100000
+  }
+
+
+  {
+    "id": 9,
+    "userId": 7,
+    "bank_name": "BRI",
+    "bank_account_number": "55555",
+    "balance": 3000000
+  }
+
+
+
+	Transaksi
+
+{
+  "id": 1,
+  "source_account_id": 7,
+  "destination_account_id": 8,
+  "amount": "100000"
+}
+
+
+	"source_account_id": "Account asal transaksi",
+ 	"destination_account_id": "Account tujuan transaksi",
