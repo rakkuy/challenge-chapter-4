@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 module.exports = {
+  // Create Transaksi
   createTransaction: async (req, res) => {
     try {
       const sourceAccountId = parseInt(req.body.source_account_id);
@@ -82,6 +83,7 @@ module.exports = {
     }
   },
 
+  // Melihat / membaca semua data yang ada di transaksi
   getAllTransaction: async (req, res) => {
     try {
       const transactions = await prisma.bank_accounts_transactions.findMany({
@@ -116,6 +118,7 @@ module.exports = {
     }
   },
 
+  // Melihat / membaca transaksi setiap ID nya
   getTransactionById: async (req, res) => {
     try {
       const transactionId = parseInt(req.params.id);
@@ -155,6 +158,7 @@ module.exports = {
     }
   },
 
+  // Update Transaksi
   updateTransaction: async (req, res) => {
     try {
       const transactionId = parseInt(req.params.id); // Assuming you are passing the transaction ID in the URL params
@@ -199,7 +203,6 @@ module.exports = {
   },
 
   // Delete Transaksi
-
   deleteTransaction: async (req, res) => {
     try {
       const transactionId = parseInt(req.params.id); // Dengan asumsi Anda meneruskan ID transaksi di parameter URL
